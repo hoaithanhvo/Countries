@@ -37,7 +37,7 @@ function App() {
         <h1>
 
           {filteredState.map(country => (
-            <div className={styles.country} key={country.id}>
+            <div className={styles.country} key={country.name.common}>
               <img src={`${country.flags.png}`} alt={country.name.common}></img>
               <p>{country.name.common}</p>
             </div>
