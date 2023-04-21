@@ -96,7 +96,6 @@ function App() {
   }, [nameComplete, state2])
   console.log("giờ", hours.datetime);
 
-
   return (
     <>
       <header style={{ margin: "0 auto" }}>
