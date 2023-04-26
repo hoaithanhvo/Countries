@@ -1,130 +1,181 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
 import styles from "./App.module.scss"
-import { toArray } from 'lodash'
+import { times } from 'lodash';
 
 function App() {
-  const [state, setState] = useState([])
-  const [text, setText] = useState('')
+  const [inputValue, setInputValue] = useState('');
   const [filteredState, setFilteredState] = useState([])
-  const [capital, setCapital] = useState([])
-  const [name, setName] = useState([])
-  const [tennuoc, settennuoc] = useState([])
-  const [inputcapital, setInputCapital] = useState([])
-  const [hours, setHours] = useState([])
-  const [state2, setState2] = useState("")
-  const [state3, setState3] = useState("")
+  const [date, setDate] = useState([])
+  const [text, setText] = useState('');
+  const [array, setArray] = useState(JSON.parse(localStorage.getItem('array')) || []);
+  const [formValues, setFormValues] = useState({
+    name: '',
+    address: '',
+    phone: '',
+    email: '',
+    birthday: '',
+    createdAt: new Date().toLocaleString()
+  });
+
+  const newArray = array.map(item => {
+    return {
+      data: item,
+      status: "active"
+    }
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues({ ...formValues, [name]: value });
+  }
+
+  const handleButtonClick = () => {
+    if (
+      formValues.name.trim() !== '' &&
+      formValues.address.trim() !== '' &&
+      formValues.phone.trim() !== '' &&
+      formValues.email.trim() !== ''
+    ) {
+      setArray([...array, formValues]);
+      setFormValues({
+        name: '',
+        address: '',
+        phone: '',
+        email: '',
+        birthday: '',
+        createdAt: new Date().toLocaleString()
+      });
+
+    }
 
 
+  };
+  // console.log(array[0][name], 132);
+
+  // thêm vào localStorage
   useEffect(() => {
-    fetch("https://restcountries.com/v3.1/all?fields=name,flags")
-      .then(response => response.json())
-      .then(data => setState(data))
-      .catch(error => console.log("lỗi1"))
-  }, [])
-
+    localStorage.setItem('array', JSON.stringify(array));
+  }, [array]);
   useEffect(() => {
-    const filterResults = () => {
-      const filteredResults = state.filter(country => {
-        const commonName = country.name.common.toLowerCase()
-        const searchText = text.toLowerCase().replace(/\s/g, "")
-        const result = commonName.includes(searchText)
-        return result
+    const activeArray = newArray.filter(item => item.status === "active");
+    localStorage.setItem('array', JSON.stringify(activeArray.map(item => item.data)));
+  }, [newArray]);
+
+  // console.log(array[0].name);
+
+
+
+  // sửa 
+  const handleEditButtonClick = (index) => {
+    const itemToEdit = array[index];
+
+    // cập nhật giá trị của ô input
+    setFormValues({
+      name: itemToEdit.name,
+      address: itemToEdit.address,
+      phone: itemToEdit.phone,
+      email: itemToEdit.email,
+    });
+
+    // xóa item khỏi mảng
+    const newArray = [...array];
+    newArray.splice(index, 1);
+    setArray(newArray);
+  };
+  //tìm
+  useEffect(() => {
+    const find = () => {
+      const filteredResults = array.filter(item => {
+        {
+          const name = item.name.toLowerCase()
+          const searchText = text.toLowerCase().replace(/\s/g, " ")
+          const result = name.includes(searchText)
+          return result
+        }
       })
       setFilteredState(filteredResults)
+
     }
-    filterResults()
-  }, [text, state])
-  // console.log(state.name.common);
-  let name1 = filteredState.map((item) => {
-    return item.name.common
-
-  })
-  const epkieu = name1.toString()
-  console.log("epkieu", epkieu);
-  useEffect(() => {
-    if (epkieu !== "") {
-      fetch(`https://restcountries.com/v3.1/name/${epkieu}?fullText=true`)
-        .then(response => response.json())
-        .then(data => {
-          setCapital(data[0].capital)
-          setName(data[0].continents)
-          settennuoc(data[0].altSpellings)
+    find()
+  }, [array, text])
 
 
-        })
-        .catch(error => console.log("lỗi4"))
-    }
 
-  }, [epkieu])
-  console.log("tennuoc", tennuoc[tennuoc.length - 1]);
-  console.log("thủ đô", capital.toString());
-
-  console.log("khu vực", name);
-  const check = name.toString().includes(" ")
-  console.log("check", check);
-  var nameComplete
-  if (check) {
-
-    nameComplete = name.toString().split(" ")[1]
+  const handleDeleteButtonClick1 = (index) => {
+    const newArray = [...array]
+    newArray.splice(index, 1)
+    setArray(newArray)
   }
-  else {
-    nameComplete = name.toString()
-  }
-  console.log("k", nameComplete);
-  // console.log("khu vực1", state2);
+  const now = new Date(); // tạo một đối tượng thời gian mới
+
+  const year = now.getFullYear(); // lấy năm hiện tại
+  const month = now.getMonth() + 1; // lấy tháng hiện tại (chú ý: tháng trong JavaScript bắt đầu từ 0)
+  const day = now.getDate(); // lấy ngày hiện tại
+  const hours = now.getHours(); // lấy giờ hiện tại
+  const minutes = now.getMinutes(); // lấy phút hiện tại
+  const seconds = now.getSeconds(); // lấy giây hiện tại
+
+  const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`; // định dạng chuỗi ngày giờ theo định dạng mong muốn
 
 
 
-  useEffect(() => {
-    fetch(`http://worldtimeapi.org/api/timezone/${nameComplete}`)
-      .then(response => response.json())
-      .then(data => {
-        setInputCapital(data)
-      })
-      .catch(error => console.log(error));
-  }, [nameComplete])
-  console.log(inputcapital);
 
 
-  inputcapital.map((item) => { console.log(item); })
-  console.log("khu vực1", state2);
-  useEffect(() => {
-    fetch(`http://worldtimeapi.org/api/timezone/${nameComplete}/${state2}`)
-      .then(response => response.json())
-      .then(data => setHours(data))
-      .catch(error => console.log("lỗi3"))
-  }, [nameComplete, state2])
-  console.log("giờ", hours.datetime);
+
+
+
 
   return (
     <>
-      <header style={{ margin: "0 auto" }}>
-        <h1 style={{ textAlign: "center" }}>Nhập Quốc gia bạn muốn tìm kiếm </h1>
-        <input className={styles.input} onChange={e => setText(e.target.value)}></input>
-        <input className={styles.input} onChange={e => setState2(e.target.value)}></input>
-        <h1>{hours.datetime}</h1>
-        <div className={styles.name}>
-          {inputcapital.map((item) => <h6>{item} ` `</h6>)}
-        </div>
-        <h1 className={styles.country}>
+      <input type='Check name' placeholder='Tìm kiếm' onChange={e => setText(e.target.value)}></input>
+      <div className={styles.input}>
+        <input type="text" name="name" placeholder='Tên khách hàng' value={formValues.name} onChange={handleInputChange} />
+        <input type="text" name="address" placeholder='Địa chỉ' value={formValues.address} onChange={handleInputChange} />
+        <input type="text" name="phone" placeholder='Số điện thoại' value={formValues.phone} onChange={handleInputChange} />
+        <input type="text" name="email" placeholder='Email' value={formValues.email} onChange={handleInputChange} />
+        <input type="text" name="birthday" placeholder='Ngày tháng năm sinh' value={formValues.birthday} onChange={handleInputChange} />
 
-          {filteredState.map(country => (
-            <div className={styles.item} key={country.name.common}>
-              <img width={300} height={200} src={`${country.flags.png}`} alt={country.name.common}></img>
-              <p className={styles.text}>{country.name.common}</p>
+        <button onClick={handleButtonClick}>Lưu</button>
+        <button onClick={() => setArray([])}>Xóa All</button>
+
+      </div>
+
+      <div className={styles.item}>
+        {filteredState.map((item, index) => {
+          const createdAt = new Date(item.created_at).toLocaleString();
+          return (
+            <div className={styles.item1} key={index}>
+              <p>Tên khách hàng: {item.name}</p>
+              <p>Email: {item.email}</p>
+              <p>Phone: {item.phone}</p>
+              <p>Địa chỉ: {item.address}</p>
+              <p>Địa chỉ: {item.birthday}</p>
+              {/* <p>Ngày tạo: {formattedDate}</p> */}
+              <p>Ngày tạo: {item.createdAt}</p>
+
+
+              {/* <p>Ngày tạo: {new Date()}</p> */}
+
+              {/* <p>{`${year}-${month}-${day} ${hours}:${minutes}`}</p> */}
+
+              <p>{index}</p>
+              <button onClick={() => handleDeleteButtonClick1(index)} >xóa</button>
+              <button onClick={() => handleEditButtonClick(index)}>sửa</button>
             </div>
-          ))}
-        </h1>
-        {/* <h1>Nước {epkieu} thuộc khu vực {nameComplete} gồm có giờ của các thành phố sau: </h1> */}
-        {/* {ketqua.map((item) => <p>{item}</p>)} */}
-        {/* {inputcapital} */}
+          )
 
-        {/* {array.map((item) =>
-          <h1>{item}</h1>
-        )} */}
-      </header>
+        })}
+      </div>
+
+
+
+
+
+
     </>
-  )
+  );
 }
 
-export default App
+export default App;
