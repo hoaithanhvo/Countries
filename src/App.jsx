@@ -122,6 +122,16 @@ function App() {
 
 
 
+  const downloadTxtFile = () => {
+    const element = document.createElement("a");
+    const fileText = JSON.stringify(array, null, 2).replace(/\\n/g, "\n");
+    const file = new Blob([fileText], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = "myArray.txt";
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  };
+
 
 
 
@@ -129,6 +139,7 @@ function App() {
 
   return (
     <>
+
       <input type='Check name' placeholder='Tìm kiếm' onChange={e => setText(e.target.value)}></input>
       <div className={styles.input}>
         <input type="text" name="name" placeholder='Tên khách hàng' value={formValues.name} onChange={handleInputChange} />
@@ -139,6 +150,7 @@ function App() {
 
         <button onClick={handleButtonClick}>Lưu</button>
         <button onClick={() => setArray([])}>Xóa All</button>
+        <button onClick={downloadTxtFile}>Tải xuống</button>
 
       </div>
 
