@@ -77,6 +77,9 @@ function App() {
       address: itemToEdit.address,
       phone: itemToEdit.phone,
       email: itemToEdit.email,
+      birthday: itemToEdit.email,
+      createdAt: new Date().toLocaleString(),
+
     });
 
     // xóa item khỏi mảng
@@ -108,18 +111,6 @@ function App() {
     newArray.splice(index, 1)
     setArray(newArray)
   }
-  const now = new Date(); // tạo một đối tượng thời gian mới
-
-  const year = now.getFullYear(); // lấy năm hiện tại
-  const month = now.getMonth() + 1; // lấy tháng hiện tại (chú ý: tháng trong JavaScript bắt đầu từ 0)
-  const day = now.getDate(); // lấy ngày hiện tại
-  const hours = now.getHours(); // lấy giờ hiện tại
-  const minutes = now.getMinutes(); // lấy phút hiện tại
-  const seconds = now.getSeconds(); // lấy giây hiện tại
-
-  const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`; // định dạng chuỗi ngày giờ theo định dạng mong muốn
-
-
 
 
   const downloadTxtFile = () => {
@@ -139,48 +130,88 @@ function App() {
 
   return (
     <>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Quản Lý Khách Hàng</h1>
+        <input className={styles.find} type='Check name' placeholder='Tìm kiếm' onChange={e => setText(e.target.value)}></input>
+        <div className={styles.header}>
+          <div className={styles.input}>
 
-      <input type='Check name' placeholder='Tìm kiếm' onChange={e => setText(e.target.value)}></input>
-      <div className={styles.input}>
-        <input type="text" name="name" placeholder='Tên khách hàng' value={formValues.name} onChange={handleInputChange} />
-        <input type="text" name="address" placeholder='Địa chỉ' value={formValues.address} onChange={handleInputChange} />
-        <input type="text" name="phone" placeholder='Số điện thoại' value={formValues.phone} onChange={handleInputChange} />
-        <input type="text" name="email" placeholder='Email' value={formValues.email} onChange={handleInputChange} />
-        <input type="text" name="birthday" placeholder='Ngày tháng năm sinh' value={formValues.birthday} onChange={handleInputChange} />
-
-        <button onClick={handleButtonClick}>Lưu</button>
-        <button onClick={() => setArray([])}>Xóa All</button>
-        <button onClick={downloadTxtFile}>Tải xuống</button>
-
-      </div>
-
-      <div className={styles.item}>
-        {filteredState.map((item, index) => {
-          const createdAt = new Date(item.created_at).toLocaleString();
-          return (
-            <div className={styles.item1} key={index}>
-              <p>Tên khách hàng: {item.name}</p>
-              <p>Email: {item.email}</p>
-              <p>Phone: {item.phone}</p>
-              <p>Địa chỉ: {item.address}</p>
-              <p>Địa chỉ: {item.birthday}</p>
-              {/* <p>Ngày tạo: {formattedDate}</p> */}
-              <p>Ngày tạo: {item.createdAt}</p>
-
-
-              {/* <p>Ngày tạo: {new Date()}</p> */}
-
-              {/* <p>{`${year}-${month}-${day} ${hours}:${minutes}`}</p> */}
-
-              <p>{index}</p>
-              <button onClick={() => handleDeleteButtonClick1(index)} >xóa</button>
-              <button onClick={() => handleEditButtonClick(index)}>sửa</button>
+            <div className={styles.box}>
+              <strong className={styles.strong}>Tên khách hàng </strong>
+              <input type="text" name="name" value={formValues.name} onChange={handleInputChange} />
             </div>
-          )
+            <div className={styles.box}>
+              <strong className={styles.strong}>Địa chỉ:</strong>
+              <input type="text" name="address" value={formValues.address} onChange={handleInputChange} />
+            </div>
+            <div className={styles.box}>
+              <strong className={styles.strong}>Số điện thoại: </strong>
+              <input type="text" name="phone" value={formValues.phone} onChange={handleInputChange} />
+            </div>
 
-        })}
+            <div className={styles.box}>
+              <strong className={styles.strong}>Tên khách hàng: </strong>
+              <input type="text" name="email" value={formValues.email} onChange={handleInputChange} />
+            </div>
+            <div className={styles.box}>
+              <strong className={styles.strong}>Ngày tháng năm sinh: </strong>
+              <input type="text" name="birthday" value={formValues.birthday} onChange={handleInputChange} />
+            </div>
+
+            <button onClick={handleButtonClick}>Lưu</button>
+            <button onClick={() => setArray([])}>Xóa All</button>
+            <button onClick={downloadTxtFile}>Tải xuống</button>
+
+          </div>
+
+
+        </div>
+
+        <div className={styles.body}>
+          <p className={styles.index}>STT</p>
+          <p >|</p>
+          <p className={styles.name}>Tên khách hàng</p>
+          <p >|</p>
+          <p className={styles.email}>Email</p>
+          <p >|</p>
+          <p className={styles.address}>Địa chỉ</p>
+          <p >|</p>
+          <p className={styles.phone}>Số điện thoại</p>
+          <p >|</p>
+          <p className={styles.birthday}>Ngày sinh</p>
+          <p >|</p>
+          <p className={styles.createdAt}> Giờ khỏi tạo</p>
+
+
+
+
+        </div>
+        <div className={styles.item}>
+          {filteredState.map((item, index) => {
+            const createdAt = new Date(item.created_at).toLocaleString();
+            return (
+              <div className={styles.item1} key={index}>
+                <p className={styles.index}>{index}</p>
+                <p>|</p>
+                <p className={styles.name}>{item.name}</p>
+                <p>|</p>
+                <p className={styles.email}>{item.email}</p>
+                <p>|</p>
+                <p className={styles.address}>{item.address}</p>
+                <p>|</p>
+                <p className={styles.phone}> {item.phone} </p>
+                <p>|</p>
+                <p className={styles.birthday}>{item.birthday}</p>
+                <p>|</p>
+                <p className={styles.createdAt}>{item.createdAt}</p>
+                <button className={styles.delete} onClick={() => handleDeleteButtonClick1(index)} >xóa</button>
+                <button className={styles.repair} onClick={() => handleEditButtonClick(index)}>sửa</button>
+              </div>
+            )
+
+          })}
+        </div>
       </div>
-
 
 
 

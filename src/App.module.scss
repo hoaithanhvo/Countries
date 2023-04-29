@@ -1,67 +1,362 @@
-.input {
-  margin: 0 auto;
-  display: flex;
-  margin-bottom: 50px;
+$font-inter: url("/path/to/inter/font/Inter-Regular.ttf");
+@mixin font-inter {
+  font-family: "Inter", sans-serif;
+  src: #{$font-inter};
 }
-.country {
-  margin: 0 auto;
+@mixin breakpoint($point) {
+  @if $point == mobile {
+    @media (min-width: 320px) and (max-width: 680px) {
+      @content;
+    }
+  }
+}
+body {
+  @include font-inter;
+}
+
+.container {
+  // overflow-x: hidden;
+
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  width: 500px;
-  background-color: red;
-  .item {
-    align-items: center;
-    width: 350px;
-    position: relative;
+  flex-direction: column;
+  // justify-content: center;
+  align-items: center;
+  // background-color: aqua;
+  position: relative;
+  .title {
+    text-align: center;
+  }
+  .header {
+    margin: 0 auto;
+    width: 500px;
     display: flex;
     flex-direction: column;
-    border: 1px solid red;
-    // .text {
-    //   position: absolute;
-    //   bottom: 0;
-    //   // margin-top: 10px;
-    // }
+    .input {
+      display: flex;
+      justify-content: space-between;
+      height: 200px;
+      // width: 1000px;
+      .box {
+        display: flex;
+        justify-content: space-between;
+        input {
+          margin-bottom: 5px;
+          width: 300px;
+          padding: 5px 10px;
+          border-radius: 5px;
+        }
+        strong {
+          font-size: 15px;
+        }
+      }
+      button {
+        margin: 10px 0;
+        border-radius: 10px;
+        height: 40px;
+      }
+    }
+    margin-bottom: 100px;
   }
-  //   opacity: 0.6;
-  // width: 1280px;
-  //   background-color: blue;
-  // transform: translateX(50%);
-  // transition: opacity 5s ease-in-out, transform 2.5s ease-in-out;
+  .find {
+    top: 200px;
+    margin-top: 1000px;
+    // padding-top: 1000px;
+    // position: absolute;
+    top: 20px;
+    margin: 0 auto;
+    border-radius: 20px;
+    width: 200px;
+    justify-content: center;
+    display: flex;
+    height: 10px;
+    margin-bottom: 55px;
+    padding: 10px 20px 10px 10px;
+    outline: 2px solid blue;
+    caret-color: red;
+  }
 }
+.body {
+  // border: 2px solid red;
+  text-align: center;
 
-.country.show {
-  opacity: 1;
-  transform: translateX(0%);
-}
-.container {
   display: flex;
 
-  justify-content: center;
-  // align-items: ;
+  // justify-items: center;
+  // align-items: center;
+  // justify-content: center;
+  // margin: 0 auto;
+  width: 1200px;
+  background-color: red;
+  // justify-content: center;
+  font-weight: bold;
+  .index {
+    // font-size: 25px;
+    width: 40px;
+    text-align: center;
+    // background-color: red;
+  }
   .name {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    flex-direction: row;
-    width: 500px;
-    background-color: red;
+    width: 200px;
+    // background-color: blue;
+  }
+  .email {
+    // background-color: green;
+    width: 250px;
+  }
+  .address {
+    // background-color: aqua;
+
+    width: 150px;
+  }
+  .phone {
+    width: 150px;
+    text-align: center;
+    // background-color: red;
+  }
+  .birthday {
+    width: 150px;
+    // background-color: blue;
+  }
+  .createdAt {
+    width: 120px;
+    // background-color: red;
   }
 }
-
 .input {
   display: flex;
   flex-direction: column;
   width: 500px;
 }
 .item {
-  display: flex;
-  flex-wrap: wrap;
-  // background-color: red;
-  justify-content: space-around;
   .item1 {
+    margin: 0 auto;
+    display: flex;
+    // justify-content: space-between;
     // text-align: center;
-    width: 300px;
+    width: 1200px;
+    text-align: center;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+
     border: 2px solid red;
+    .index {
+      width: 40px;
+      text-align: center;
+      // background-color: red;
+    }
+    .name {
+      width: 200px;
+      // height: 100px;
+      // background-color: blue;
+    }
+    .email {
+      // background-color: green;
+      width: 250px;
+    }
+    .address {
+      // background-color: aqua;
+      width: 150px;
+    }
+    .phone {
+      width: 150px;
+      // background-color: red;
+    }
+    .birthday {
+      width: 150px;
+      // background-color: blue;
+    }
+    .createdAt {
+      width: 120px;
+      // background-color: red;
+    }
+    .delete {
+      margin-left: 5px;
+      width: 50px;
+      margin-right: 10px;
+      // color: red;
+      width: 50px;
+      height: 30px;
+      text-align: center;
+      margin: 0 auto;
+      align-items: center;
+      border-radius: 10px;
+    }
+
+    .repair {
+      border-radius: 10px;
+      margin-left: 5px;
+      width: 50px;
+      margin-right: 10px;
+      // color: red;
+      width: 50px;
+      height: 30px;
+      text-align: center;
+      margin: 0 auto;
+      align-items: center;
+    }
+  }
+}
+
+.delete:hover {
+  // color: red;
+  cursor: pointer;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.repair:hover {
+  // color: red;
+  border-color: red;
+  cursor: pointer;
+}
+
+@include breakpoint(mobile) {
+  .container {
+    width: 100%;
+    .header {
+      width: 100%;
+      margin: 0 auto;
+      // background-color: red;
+
+      .input {
+        width: 100%;
+        .box {
+          // background-color: blue;
+          margin: 0 auto;
+          width: 100%;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          strong {
+            margin-bottom: 10px;
+            font-size: 12px;
+            margin-top: 5px;
+          }
+          input {
+            // padding: 1px 0;
+            width: 200px;
+          }
+        }
+        button {
+          padding: 2px 0;
+          // margin: 20px 0;
+          width: 100px;
+          height: 30px;
+          border-color: none none;
+          border-bottom: none;
+          border-right: none;
+          align-self: center;
+          // height: 20px;
+          // margin: 0 auto;
+          // justify-content: space-around;
+          // margin-bottom: 100px;
+          background-color: red;
+        }
+      }
+    }
+    .body {
+      // display: block;
+      flex-direction: row;
+      // margin: ;
+      // align-items: end;
+      align-self: start;
+      margin-top: 250px;
+      font-size: 8px;
+      background-color: red;
+      width: 80%;
+      // margin: 0 2px;
+      justify-self: end;
+      justify-content: flex-start;
+
+      // display: block;
+      // flex-direction: column;
+      // width: 100px;
+      .index {
+        // font-size: 25px;
+        width: 40px;
+        text-align: center;
+        // background-color: red;
+      }
+      .name {
+        width: 200px;
+        // background-color: blue;
+      }
+      .email {
+        // background-color: green;
+        width: 250px;
+      }
+      .address {
+        // background-color: aqua;
+
+        width: 150px;
+      }
+      .phone {
+        width: 150px;
+        text-align: center;
+        // background-color: red;
+      }
+      .birthday {
+        width: 150px;
+        // background-color: blue;
+      }
+      .createdAt {
+        width: 120px;
+        // background-color: red;
+      }
+    }
+    .item {
+      font-size: 7px;
+      width: 100%;
+      .item1 {
+        font-size: 7px;
+        width: 100%;
+        .index {
+          // font-size: 25px;
+          width: 40px;
+          text-align: center;
+          // background-color: red;
+        }
+        .name {
+          width: 200px;
+          // background-color: blue;
+        }
+        .email {
+          // background-color: green;
+          width: 250px;
+        }
+        .address {
+          // background-color: aqua;
+
+          width: 150px;
+        }
+        .phone {
+          width: 150px;
+          text-align: center;
+          // background-color: red;
+        }
+        .birthday {
+          width: 150px;
+          // background-color: blue;
+        }
+        .createdAt {
+          width: 120px;
+          // background-color: red;
+        }
+        .delete {
+          margin-right: 5px;
+          height: 20px;
+          font-size: 7px;
+          width: 30px;
+        }
+        .repair {
+          height: 20px;
+          font-size: 7px;
+          width: 30px;
+        }
+      }
+    }
   }
 }
